@@ -53,8 +53,10 @@ void setup()
   Wire.begin(I2C_ADDR);
   Wire.onRequest(onRequestData);
 
+#ifdef SERIAL_OUTPUT
   Serial.begin(9600); //This pipes to the serial monitor
   Serial.println("Initialize Serial Monitor");
+#endif  
 }
 
 void loop()
