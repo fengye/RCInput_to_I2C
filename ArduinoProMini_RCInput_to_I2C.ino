@@ -54,7 +54,7 @@ void setup()
   Wire.onRequest(onRequestData);
 
 #ifdef SERIAL_OUTPUT
-  Serial.begin(9600); //This pipes to the serial monitor
+  Serial.begin(115200); //This pipes to the serial monitor
   Serial.println("Initialize Serial Monitor");
 #endif  
 }
@@ -120,30 +120,6 @@ void loop()
 
   if (currMillis - prevMillis >= delayMilli)
   {
-    // blink TX
-    if (leftOrRightLED & 0x2)
-    {
-      ledState[1] = !ledState[1];
-
-      digitalWrite(ONBOARDLED, ledState[0]);
-    }
-    else
-    {
-      digitalWrite(ONBOARDLED, HIGH);
-    }
-
-    // blink RX
-    if (leftOrRightLED & 0x1)
-    {
-      ledState[0] = !ledState[0];
-
-      digitalWrite(ONBOARDLED, ledState[0]);
-    }
-    else
-    {
-      digitalWrite(ONBOARDLED, HIGH);
-    }
-
     if (leftOrRightLED & 0x1 && leftOrRightLED & 0x2)
     {
       // both lit, means error
@@ -151,13 +127,30 @@ void loop()
     }
     else
     {
+      // blink LED
+      if (leftOrRightLED & 0x2)
+      {
+        ledState[1] = !ledState[1];
+  
+        digitalWrite(ONBOARDLED, ledState[1]);
+      }
+      else if (leftOrRightLED & 0x1)
+      {
+        ledState[0] = !ledState[0];
+  
+        digitalWrite(ONBOARDLED, ledState[0]);
+      }
+      else
+      {
+        digitalWrite(ONBOARDLED, HIGH);
+      }
       SOUT("Angle: ");
       SOUT(angle);
 
       SOUT(" Throttle: ");
       SOUTLN(throttle);
-
     }
+
 
 
     prevMillis = currMillis;
