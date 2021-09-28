@@ -1,6 +1,7 @@
 #include <ServoInput.h>
 #include <Wire.h>
 #include <util/atomic.h>
+#include <math.h>
 
 // Requires: ServoInput library
 // https://github.com/dmadison/ServoInput
@@ -67,20 +68,22 @@ void loop()
     angle = servoSignal.getAngle();
     lastServoReading = (uint16_t)servoSignal.map(0x0, 0xfffe);
     lastServoAvailableMilli = currMillis;
-  
+
+    const float EXP = 0.9f;
+    const float SCALE = 4.0f;
     if (angle > 90.0f)
     {
       leftOrRightLED = 0x2;
 
       float val = 180.0f - angle; // netrual -> [90, 0] <- right most
-      delayMilli = (int)(val * 10) + 33;
+      delayMilli = (int)(powf(val * SCALE, EXP)) + 33;
     }
     else
     {
       leftOrRightLED = 0x1;
 
       float val = angle; // leftmost -> [0, 90] <- netrual
-      delayMilli = (int)(val * 10) + 33;
+      delayMilli = (int)(powf(val * SCALE, EXP)) + 33;
     }
   }
   else
