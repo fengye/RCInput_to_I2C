@@ -10,11 +10,11 @@
 // https://github.com/dmadison/ServoInput
 
 
-// Super simple protocol over I2C, 6 bytes in one transmission.
+// Super simple protocol over I2C, 9 bytes in one transmission.
 // See the implementation of onRequestData()
-// -------- -------- -------- -------- -------- --------
-// |  01   |   16bit_servo   |   02   |  16bit_throttle |
-// -------- -------- -------- -------- -------- --------
+// -------- -------- -------- -------- -------- -------- -------- -------- -------- 
+// |  01   |   16bit_servo   |   02   |  16bit_throttle |  0x10  |  16bit_misc    |
+// -------- -------- -------- -------- -------- -------- -------- -------- -------- 
 
 // ServoInput library needs pin that can be triggered by external interrupt
 // Uno, Nano, Mini, other 328-based: Pin 2, 3
